@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+   <head>
+      <script src="http://d3js.org/d3.v3.min.js"></script>
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/d3-legend/1.7.0/d3-legend.min.js"></script>
+      <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+      <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+      <script src="bad.js"></script>
+      <script src="good.js"></script>
+      <script src="https://d3js.org/d3.v4.min.js"></script>
+   </head>
+   <body>
+      <div class="container-fluid">
+         <div class="row" style="margin-top: 40px">
+            <div class="col-lg-6" id="bad" >
+               <h5 style="text-align: center;">Number of victims in different cities of MA</h5>
+               <script type="text/javascript">
+                  temp();
+               </script>
+            </div>
+            <div class="col-lg-6" id="good" >
+               <h5 style="text-align: center;">Number of victims in different cities of MA</h5>
+               <script type="text/javascript">
+                  temp2();
+               </script>
+            </div>
+         </div>
+         <div class="row" style="margin-bottom: 15px">
+            <div class="col-lg-6" >
+               <p> The color chosen in this visualization are not appropriate. The colors for categorical color-maps should be unique. In this visulalization there has many variant of red color which may provide false information to the viewer.
+                  <a href="https://ucr.fbi.gov/crime-in-the-u.s/2013/crime-in-the-u.s.-2013/tables/table-8/table-8-state-cuts/table_8_offenses_known_to_law_enforcement_massachusetts_by_city_2013.xls" target="_blank">Please click here to view Data</a>
+               </p>
+            </div>
+            <div class="col-lg-6" >
+               <p> The color chosen in this visualization are correct because every color is distinct and has different hue value but still presenting the same emphasis.
+                  <a href="https://ucr.fbi.gov/crime-in-the-u.s/2013/crime-in-the-u.s.-2013/tables/table-8/table-8-state-cuts/table_8_offenses_known_to_law_enforcement_massachusetts_by_city_2013.xls" target="_blank">Please click here to view Data</a>
+               </p>
+            </div>
+         </div>
+      </div>
+      <div class="container" style="margin-top:15px">
+         <p> This table provides the name of the city  associated with each alphabet.
+         <table class="table table-inverse">
+            <thead class="thead-inverse">
+               <tr class="success">
+                  <th>Abbreviation</th>
+                  <th>City Name</th>
+                  <th>Abbreviation</th>
+                  <th>City Name</th>
+               </tr>
+            </thead>
+            <tbody>
+               <tr>
+                  <td>A</td>
+                  <td>Acushnet</td>
+               </tr>
+               <tr>
+                  <td>B</td>
+                  <td>Barre</td>
+                  <td>M</td>
+                  <td>Marion</td>
+               </tr>
+               <tr>
+                  <td>C</td>
+                  <td>Cohasset</td>
+                  <td>N</td>
+                  <td>North Brookfield</td>
+               </tr>
+               <tr>
+                  <td>D</td>
+                  <td>Douglas</td>
+                  <td>O</td>
+                  <td>Oak Bluffs</td>
+               </tr>
+               <tr>
+                  <td>E</td>
+                  <td>Eastham</td>
+                  <td>P</td>
+                  <td>Paxton</td>
+               </tr>
+               <tr>
+                  <td>F</td>
+                  <td>Freetown</td>
+                  <td>R</td>
+                  <td>Rochester</td>
+               </tr>
+               <tr>
+                  <td>G</td>
+                  <td>Georgetown</td>
+                  <td>S</td>
+                  <td>Sharon</td>
+               </tr>
+               <tr>
+                  <td>H</td>
+                  <td>Halifax</td>
+                  <td>T</td>
+                  <td>Templeton</td>
+               </tr>
+               <tr>
+                  <td>I</td>
+                  <td>Ipswich</td>
+                  <td>U</td>
+                  <td>Upton</td>
+               </tr>
+               <tr>
+                  <td>L</td>
+                  <td>Lincoln</td>
+                  <td>W</td>
+                  <td>Warren</td>
+               </tr>
+            </tbody>
+         </table>
+      </div>
+   </body>
+</html>

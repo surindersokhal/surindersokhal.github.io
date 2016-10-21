@@ -1,0 +1,84 @@
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="d3-geomap/css/d3.geomap.css" rel="stylesheet">
+        <script src="d3-geomap/vendor/d3.geomap.dependencies.min.js"></script>
+        <script src="d3-geomap/js/d3.geomap.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    </head>
+    <script type="text/javascript">
+        function bad(){
+        
+        
+        
+          var map = d3.geomap.choropleth()
+        .geofile('d3-geomap/topojson/countries/USA.json')
+        .projection(d3.geo.albersUsa)
+        .column('2014')
+        .colors(colorbrewer.Set1[9])
+        .unitId('Code')
+        .scale(750)
+        .legend(true);
+        
+        d3.csv('data.csv', function(error, data) {
+        d3.select('#map')
+          .datum(data)
+          .call(map.draw, map);
+        });
+        }
+        function good(){
+        
+        
+        
+          var map = d3.geomap.choropleth()
+        .geofile('d3-geomap/topojson/countries/USA.json')
+        .projection(d3.geo.albersUsa)
+        .column('2014')
+        .colors(colorbrewer.Blues[9])
+        .unitId('Code')
+        .scale(750)
+        .legend(true);
+        
+        d3.csv('data.csv', function(error, data) {
+        d3.select('#map2')
+          .datum(data)
+          .call(map.draw, map);
+        });
+        }
+        
+        
+    </script>
+    <body>
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-6" id="map">
+                    <h3 style="text-align: center; margin-bottom: 35px"> Murder Rate per 10000 people</h3>
+                    <script type="text/javascript">
+                        bad();
+                    </script>
+                </div>
+                <div class="col-lg-6" id="map2">
+                    <h3 style="text-align: center; margin-bottom: 35px">
+                    Murder Rate per 10000 people
+                    <script type="text/javascript">
+                        good();
+                    </script>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-6" style="text-align: center; margin-top: 35px">
+                    <p> The color scheme chosen for the sequential color maps is not appropriate. Different colors with different hue doesn't present any information. These graphs are necessary for represnting the flow of information. But choosing random colors will mislead. 
+                    <a  href="http://www.deathpenaltyinfo.org/murder-rates-nationally-and-state#MRalpha" target="_blank"> Click to view the Data Source</a>  
+                </div>
+                <div class="col-lg-6" style="text-align: center; margin-top: 35px" >
+                    <p> The color scheme chosen for the sequential color maps is appropriate. Here the colors are in an increasing order of their Saturation thus depicting some flow of information. Increasing saturation of a color helps viewer to understood the data and information.
+                    <a  href="http://www.deathpenaltyinfo.org/murder-rates-nationally-and-state#MRalpha" target="_blank">Click to view the Data Source</a>
+                </div>
+            </div>
+        </div>
+        </div>
+    </body>
+</html>

@@ -217,7 +217,30 @@ function plot_graph(){
 favorite music group, place where you have lived, etc.). Please write a few sentences
 saying why you picked the dataset, and where the dataset came from (always cite your
 data sources!).
-          Ans: This datasets interests me because this dataset has been used to to classify System for Predicting the Cellular Localization Sites of Proteins in ecoli. This dataset has been downloaded from <a href="https://github.com/deric/clustering-benchmark/blob/master/src/main/resources/datasets/real-world/ecoli.arff">https://github.com/deric/clustering-benchmark/blob/master/src/main/resources/datasets/real-world/ecoli.arff</a> and the other citations has already been provided</p>
+          Ans: This datasets interests me because this dataset has been used to to classify System for Predicting the Cellular Localization Sites of Proteins in ecoli. This dataset has been downloaded from <a href="https://github.com/deric/clustering-benchmark/blob/master/src/main/resources/datasets/real-world/ecoli.arff">https://github.com/deric/clustering-benchmark/blob/master/src/main/resources/datasets/real-world/ecoli.arff</a> and the other citations has already been provided<br><br></p>
+    <p> Q2: Clean the dataset and conduct a preliminary exploration of the data in your tool of choice
+(e.g., Tableau, Excel, etc.). Please write a few sentences describing this process,
+including which tool you used, and what interesting trends or observations you made.   
+        Ans: Originally the dataset was in .arff format which needs to be converted to .csv format. I have used <a href = "https://products.office.com/en-us/excel">Microsoft Excel</a> in order to clean and convert the data to required format. Therewere few attrbutes whose values were same through out the entire dataset. Therefore, including them in the clustering will not help at all. These were the observations made : <br>
+        lip: von Heijne's Signal Peptidase II consensus sequence score.
+             Binary attribute.<br>
+        chg: Presence of charge on N-terminus of predicted lipoproteins.
+             Binary attribute.<br>
+        These two attributes have the same value and no effect on the clustering on dataset.</p>
+
+    <p>
+      Q3:Write a justification of your design decisions (visual encodings, color, interactions, etc.).
+      Ans: I have decided to choose scatter plot for this dataset because this dataset is in particular to clustering type. While analyzing the data, I wanted to know that which attribiute of dataset helps in clustering and which and there is no chart representation other than Scatter plots for showing clustering.
+
+      Visual Encoding: <br>
+      The dataset is with all its attributes of type -Quantitative where as class attribute of type: Categorical<br>
+      It doesnot have any key therefore chosen as scatter plot.<br>
+      Axis Orientation: Rectilinear.<br>
+      
+    </p>    
+
+
+
    </div>
 
 

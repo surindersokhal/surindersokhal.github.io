@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html>
+<meta charset="utf-8">
+<style>
+
+.bar {
+  fill: steelblue;
+}
+
+.bar:hover {
+  fill: red;
+}
+
+.axis--x path {
+  display: none;
+}
+
+</style>
+<svg width="1200" height="500"></svg>
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script>
+function plotGraph(){
+var svg = d3.select("svg"),
+    margin = {top: 40, right: 20, bottom: 70, left: 100},
+    width = +svg.attr("width") - margin.left - margin.right,
+    height = +svg.attr("height") - margin.top - margin.bottom;
+
+svg.append("text")
+        .attr("x", (width / 2))             
+        .attr("y", 100)
+        .attr("fill", "black")
+        .style("font-size", "26px") 
+        .style("text-decoration", "underline")  
+        .text("Word vs Frequency");
+var x = d3.scaleBand().rangeRound([0, width]).padding(0.10),
+    y = d3.scaleLinear().rangeRound([height, 10]);
+
+
+
+var g = svg.append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+d3.csv("data.csv", function(d) {
+  d.Frequency = +d.Frequency;
+  return d;
+}, function(error, data) {
+  if (error) throw error;
+
+  x.domain(data.map(function(d) { return d.Word;}));
+  y.domain([0, d3.max(data, function(d) { return d.Frequency; })]);
+
+
+  g.append("g")
+      .attr("class", "axis axis--x")
+      .attr("transform", "translate(0," + height + ")")
+      .call(d3.axisBottom(x))
+      .append("text")
+      .attr("fill", "black")
+      .attr("x",700)
+      .attr("y", 50)
+      .style("font-size", "20px") 
+      .style("text-decoration", "underline") 
+      .attr("dx", ".31em")
+      .attr("text-anchor", "end")
+      .text("Frequently Occuring Words");
+
+
+  g.append("g")
+      .attr("class", "axis axis--y")
+      .call(d3.axisLeft(y).ticks(10, "%"))
+    .append("text")
+    .attr("fill", "black")
+      .attr("transform", "rotate(-90)")
+      .attr("y",-50)
+      .attr("x", -200)
+      .style("font-size", "20px") 
+      .style("text-decoration", "underline") 
+      .attr("dy", ".1em")
+      .attr("text-anchor", "end")
+      .text("Frequency");
+
+  g.selectAll(".bar")
+    .data(data)
+    .enter().append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) { return x(d.Word); })
+      .attr("y", function(d) { return y(d.Frequency); })
+      .attr("width", x.bandwidth())
+      .attr("height", function(d) { return height - y(d.Frequency); });
+});
+}
+</script>
+
+<body onload="plotGraph();">
+<p> This graph shows the word frequencey count for top 30 words.</p>
+</body>
+</html>

@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+
+<html>
+<meta charset="utf-8">
+<style>
+
+
+.axis path,
+.axis line {
+  fill: none;
+  stroke: #000;
+  shape-rendering: crispEdges;
+}
+
+.x.axis path {
+  display: none;
+}
+
+.line {
+  fill: none;
+  stroke: steelblue;
+  stroke-width: 1.5px;
+}
+
+
+</style>
+<body>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
+
+var margin = {top: 90, right: 20, bottom: 70, left: 80},
+    width = 960 - margin.left - margin.right,
+    height = 500 - margin.top - margin.bottom;
+
+
+
+var x = d3.scale.linear()
+    .range([80, width]);
+
+var y = d3.scale.linear()
+    .range([height, 0]);
+
+var xAxis = d3.svg.axis()
+    .scale(x)
+    .orient("bottom");
+
+var yAxis = d3.svg.axis()
+    .scale(y)
+    .orient("left");
+
+var line = d3.svg.line()
+    .x(function(d) { return x(d.ID); })
+    .y(function(d) { return y(d.Fill_Amount); });
+
+var svg = d3.select("body").append("svg")
+    .attr("width", width + margin.left + margin.right)
+    .attr("height", height + margin.top + margin.bottom)
+  .append("g")
+    .attr("transform", "translate(" + margin.left + "," + margin.top + ")");
+
+svg.append("text")
+        .attr("x", (width / 2.5))             
+        .attr("y", -40)
+        .attr("fill", "black")
+        .style("font-size", "26px") 
+        .style("text-decoration", "underline")  
+        .text("Max Fuel Used");
+
+d3.csv("BMW128i_HW2.csv", type, function(error, data) {
+  if (error) throw error;
+
+  x.domain(d3.extent(data, function(d) { return d.ID; }));
+  y.domain(d3.extent(data, function(d) { return d.Fill_Amount; }));
+
+  svg.append("g")
+      .attr("class", "x axis")
+    .attr("transform", "translate(0," + height + ")")
+      .call(xAxis.ticks(20,"s"))
+      .append("text")
+      .attr("fill", "black")
+      .attr("x",450)
+      .attr("y", 50)
+      .style("font-size", "20px") 
+      .style("text-decoration", "underline") 
+      .attr("dx", ".31em")
+      .attr("text-anchor", "end")
+      .text("ID");
+
+  svg.append("g")
+      .attr("class", "y axis")
+      .call(yAxis)
+    .append("text")
+      .attr("transform", "rotate(-90)")
+       .attr("y",-50)
+      .attr("x", -200)
+      .style("font-size", "20px") 
+      .style("text-decoration", "underline") 
+      .attr("dy", ".1em")
+      .text("Fill Amount");
+
+  svg.append("path")
+      .datum(data)
+      .attr("class", "line")
+      .attr("d", line);
+});
+
+function type(d) {
+  
+  d.Fill_Amount = +d.Fill_Amount;
+  return d;
+}
+
+</script>
+
+
+<body>
+<p> This graph represents the Gas filled at each ID. I have chosen the line graphs again to show the trends. In this graph the maximum the fuel has been filled is 13.85 at ID 47 which is nearest to the end</p>
+</body>
+</html>

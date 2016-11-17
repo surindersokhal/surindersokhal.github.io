@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<script src="//d3js.org/d3.v3.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+<style>
+   .link {
+   fill: none;
+   stroke: #666;
+   stroke-width: 2.5px;
+   }
+   #move {
+   fill: green;
+   }
+   .link.move{
+   stroke: green;
+   }
+   #markedge {
+   fill: yellow;
+   }
+   .link.markedge {
+   stroke: yellow;
+   }
+   #unmarkedge{
+   fill: red;
+   }
+   .link.unmarkedge {
+    stroke: red;
+    stroke-dasharray: 0,7 8;
+   
+   }
+   #edge{
+   fill: white;
+   }
+   .link.edge {
+   stroke: white;
+   }
+   body{
+   background-color: black;
+   }
+   circle {
+   fill: #ccc;
+   stroke: #333;
+   stroke-width: 4.5px;
+   }
+   text {
+   font: 16px sans-serif;
+   pointer-events: none;
+   color: white;
+   text-shadow: 0 1px 0 #fff, 1px 0 0 #fff, 0 -1px 0 #fff;
+   }
+</style>
+<script src="//d3js.org/d3.v3.min.js"></script>
+<script>
+   function plot_graph(){
+   // http://blog.thomsonreuters.com/index.php/mobile-patent-suits-graphic-of-the-day/
+   var links = [
+     {source: "A", target: "C", type: "edge"},
+     {source: "A", target: "E", type: "edge"},
+     {source: "B", target: "F", type: "edge"},
+     {source: "C", target: "F", type: "edge"},
+     {source: "D", target: "F", type: "edge"},
+     {source: "E", target: "F", type: "edge"},
+     {source: "B", target: "C", type: "edge"},
+     {source: "C", target: "D", type: "edge"},
+   
+     {source: "A", target: "C", type: "move"},
+     {source: "C", target: "F", type: "move"},
+     {source: "F", target: "E", type: "move"},
+     {source: "E", target: "A", type: "move"},
+     {source: "A", target: "C", type: "markedge"},
+     {source: "A", target: "C", type: "move"},
+     {source: "B", target: "C", type: "markedge"},
+     {source: "C", target: "F", type: "markedge"},
+     {source: "C", target: "D", type: "markedge"},
+     {source: "C", target: "F", type: "move"},
+     {source: "E", target: "F", type: "markedge"},
+     {source: "E", target: "F", type: "unmarkedge"},
+     {source: "F", target: "D", type: "move"},
+     {source: "D", target: "C", type: "move"},
+     {source: "C", target: "B", type: "move"},
+     {source: "B", target: "F", type: "move"},
+     {source: "F", target: "E", type: "move"},
+     {source: "A", target: "E", type: "markedge"},
+   ];
+   
+   var nodes = {};
+   
+   // Compute the distinct nodes from the links.
+   links.forEach(function(link) {
+     link.source = nodes[link.source] || (nodes[link.source] = {name: link.source});
+     link.target = nodes[link.target] || (nodes[link.target] = {name: link.target});
+   });
+   
+   var width = 560,
+       height = 600;
+   
+   var force = d3.layout.force()
+       .nodes(d3.values(nodes))
+       .links(links)
+       .size([width, height])
+       .linkDistance(250)
+       .charge(-900)
+       .on("tick", tick)
+       .start();
+   
+   var svg = d3.select("#graph").append("svg")
+       .attr("width", width)
+       .attr("height", height);
+   
+   // Per-type markers, as they don't inherit styles.
+   svg.append("defs").selectAll("marker")
+       .data(["move", "markedge", "unmarkedge", "edge"])
+     .enter().append("marker")
+       .attr("id", function(d) { return d; })
+       .attr("viewBox", "0 -5 10 10")
+       .attr("refX", 15)
+       .attr("refY", -1.5)
+       .attr("markerWidth", 8)
+       .attr("markerHeight", 8)
+       .attr("orient", "auto")
+     .append("path")
+       .attr("d", "M0,-5L10,0L0,5");
+   
+   var path = svg.append("g").selectAll("path")
+       .data(force.links())
+     .enter().append("path")
+       .attr("class", function(d) { return "link " + d.type; })
+       .attr("marker-end", function(d) { return "url(#" + d.type + ")"; });
+   
+   var circle = svg.append("g").selectAll("circle")
+       .data(force.nodes())
+     .enter().append("circle")
+       .attr("r", 8)
+       .call(force.drag);
+   
+   var text = svg.append("g").selectAll("text")
+       .data(force.nodes())
+     .enter().append("text")
+       .attr("x", 18)
+       .attr("y", ".31em")
+       .text(function(d) { return d.name; });
+   
+   // Use elliptical arc path segments to doubly-encode directionality.
+   function tick() {
+     path.attr("d", linkArc);
+     circle.attr("transform", transform);
+     text.attr("transform", transform);
+   }
+   
+   function linkArc(d) {
+     var dx = d.target.x - d.source.x,
+         dy = d.target.y - d.source.y,
+         dr = (Math.sqrt(dx * dx + dy * dy))*1.1;
+     return "M" + d.source.x + "," + d.source.y + "A" + dr + "," + dr + " 0 0,1 " + d.target.x + "," + d.target.y;
+   }
+   
+   function transform(d) {
+     return "translate(" + d.x + "," + d.y + ")";
+   }
+   };
+</script>
+<body>
+   <div class="container-fluid">
+      <div class="row" style="margin-top: 10px; margin-left: 10px">
+         <div class="col-lg-5" id="graph" >
+            <script>
+               plot_graph();
+            </script>
+         </div>
+         <div class="col-lg-6">
+            <div class="row" style="margin-top: 10px; margin-left: 20px;border: 0.2px solid white">
+               <div class="col-lg-4" >
+                  <h4 style="color: white; text-align: center;"> Visual Encodings</h3>
+                  <dl style="color: white">
+                    <dt> Arrange Tables</dt>
+                    <dd style="margin-left: 30px"> --Order</dd>
+                    <dt style="margin-top: 10px"> Key</dt>
+                    <dd style="margin-left: 30px">-- No Such key exist</dd>
+                    <dt style="margin-top: 10px"> Value Type</dt>
+                    <dd style="margin-left: 30px"> -- Categorical</dd>
+                    </dl>
+               </div>
+              <div class="col-lg-8">
+                  <h4 style="color: white; text-align: center;"> Color Scheme</h3>
+                  <dl style="color: white;margin-left: 20px">
+                    <dt style="color: red"> Dashed Red</dt>
+                    <dd style="margin-left: 30px;color: red">--Represents the edges unmarked by the player</dd>
+                    <dt style="margin-top: 10px;color: white"> White</dt>
+                    <dd style="margin-left: 30px">--Represents an edge which was not used by player </dd>
+                    <dt style="margin-top: 10px;color: green"> Green</dt>
+                    <dd style="margin-left: 30px;color: green"> --Represents the edges moved by the player</dd>
+                    <dt style="margin-top: 10px;color: yellow"> Yellow</dt>
+                    <dd style="margin-left: 30px;color: yellow">--Represents the edges marked by the player</dd>
+                    </dl>
+               </div>
+            </div>
+            <div class="row" style="margin-top: 10px; margin-left: 20px">
+              <h2 style="color:   #1E90FF; text-align: center;"> About graph</h3>
+              <p style="color:white"> This graph is a visual represantation of the game played. The different colors on the edge represents different operations (move, marked, unmarked). Green color represents the player opted to move from Node Source -> Node Destination. The arrow represents the edge (source->destination). There is an edge from D -> F which is marked white because it represents an existing edge which is neither moved nor marked/unmarked by the player. Dashed edge with red and yellow color means the player has first marked this edge and later on unmarked this edge. I have opted to choose static graph represantation. </p>
+              <a href="http://bl.ocks.org/mbostock/1153292">Ref: http://bl.ocks.org/mbostock/1153292</a>
+                  
+            </div>
+         </div>
+      </div>
+   </div>
+</body>
+</html>
